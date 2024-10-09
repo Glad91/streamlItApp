@@ -1,8 +1,41 @@
 import streamlit as st
 import numpy_financial as npf
+import streamlit.components.v1 as components
 
 def main():
-    st.title("Calculateur de Prêt")
+    # Setting page configuration
+    st.set_page_config(page_title="Calculateur de Prêt", page_icon=":money_with_wings:", layout="centered")
+    
+    # Adding custom CSS for better styling
+    st.markdown("""
+        <style>
+            .stButton button {
+                background-color: #4CAF50;
+                color: white;
+                border-radius: 10px;
+                padding: 10px 20px;
+            }
+            .result-card {
+                background-color: #f0f2f6;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+                margin: 20px 0;
+            }
+            .result-title {
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 10px;
+            }
+            .result-value {
+                font-size: 1.5em;
+                color: #007BFF;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Title and description
+    st.title("💰 Calculateur de Prêt")
     st.write("Cette application permet de calculer les mensualités d'un crédit en fonction du montant emprunté, de la durée, et du taux d'intérêt.")
 
     # Input fields for the loan details
@@ -28,11 +61,25 @@ def main():
     # Calculate monthly payment including insurance
     total_monthly_payment = monthly_payment + monthly_insurance_cost
 
-    # Display the results
-    st.write(f"Mensualités à payer (hors assurance) : {monthly_payment:.2f} €")
-    st.write(f"Mensualités à payer (assurance incluse) : {total_monthly_payment:.2f} €")
-    st.write(f"Coût total des intérêts sur la période : {total_interest:.2f} €")
-    st.write(f"Coût total de l'assurance sur la période : {total_insurance_cost:.2f} €")
+    # Display the results in a styled way
+    st.markdown("""
+        <div class="result-card">
+            <div class="result-title">Mensualités à payer (hors assurance) :</div>
+            <div class="result-value">{:.2f} €</div>
+        </div>
+        <div class="result-card">
+            <div class="result-title">Mensualités à payer (assurance incluse) :</div>
+            <div class="result-value">{:.2f} €</div>
+        </div>
+        <div class="result-card">
+            <div class="result-title">Coût total des intérêts sur la période :</div>
+            <div class="result-value">{:.2f} €</div>
+        </div>
+        <div class="result-card">
+            <div class="result-title">Coût total de l'assurance sur la période :</div>
+            <div class="result-value">{:.2f} €</div>
+        </div>
+    """.format(monthly_payment, total_monthly_payment, total_interest, total_insurance_cost), unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
